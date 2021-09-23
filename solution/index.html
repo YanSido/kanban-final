@@ -12,24 +12,39 @@
     <div id = "page-title">
         <h1>Welcome to Sido's Kanban</h1>
     </div>
+    <div id = "search-div">
+        <input type="text" placeholder = "Search Task" id = "search">
+    </div>
     <div id = "sections-container">
         <section id = "to-do-tasks-section">
             <div class = "title-div" id = "to-do-title-div">
                 <h2>TO DO</h2>
                 <h3>0</h3>
-            </div>  
+            </div>
+            <ul class="to-do-tasks">
+            </ul>
+            <input type = "text" placeholder="Add Task" id = "add-to-do-task">
+            <button type = "submit" id = "submit-add-to-do">Button</button>
         </section>
         <section id = "in-progress-tasks-section">
             <div class = "title-div" id = "in-progress-title-div">
                 <h2>IN PROGRESS</h2>
                 <h3>0</h3>
-            </div> 
+            </div>
+            <ul class="in-progress-tasks">
+            </ul>
+            <input type = "text" placeholder="Add Task" id = "add-in-progress-task">
+            <button type = "submit" id = "submit-add-in-progress">Button</button>
         </section>
         <section id = "done-tasks-section">
             <div class = "title-div" id = "done-title-div">
                 <h2>DONE</h2>
                 <h3>0</h3>
-            </div> 
+            </div>
+            <ul class="done-tasks">
+            </ul>
+            <input type = "text" placeholder="Add Task" id = "add-done-task">
+            <button type = "submit" id = "submit-add-done">Button</button>
         </section>
     </div>
 </body>
