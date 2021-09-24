@@ -49,6 +49,27 @@ function moveTask(newTable, task){
     addTask(tableElement, task.innerText)
 }
 
+function searchTask(){
+    // Display tasks that their name contains given string
+    let searchTaskString = document.getElementById("search") // Given string in search bar
+    searchTaskString = searchTaskString.value.toUpperCase() // Does not metter if lower case or upper case
+    if (searchTaskString !== ""){
+        for (let task of document.getElementsByClassName("task")){
+            if (!task.innerText.toUpperCase().includes(searchTaskString)){ // Checks every task if contains the given search
+                task.style.display = "none"
+            }
+            else{
+                task.style.display = "block"
+            }
+        }
+    }
+    else{
+        for (let task of document.getElementsByClassName("task")){
+            task.style.display = "block"   
+        }
+    }
+}
+
 function findTableNameByElement(tableElement){
     // Gets table Element
     // Returns the name of the table
@@ -136,7 +157,7 @@ document.addEventListener("click", event => { // Uses one listener to all click 
     }
   })
 
-document.addEventListener("dblclick", event => {
+document.addEventListener("dblclick", event => { // Handles double click events
     if (event.target.className === "task"){
         event.target.setAttribute("contenteditable", true) // Enable the edit
         event.target.addEventListener("blur", () => {editTask(event.target)}) 
@@ -145,11 +166,11 @@ document.addEventListener("dblclick", event => {
 })
 
 let mousePositionElement // Get live element mouse position
-document.addEventListener("mouseover", event =>{
+document.addEventListener("mouseover", event =>{ // Handles hover events
     mousePositionElement = event.target
 })
 
-document.addEventListener("keydown", event =>{
+document.addEventListener("keydown", event =>{ // Handles keyboard press events
     if (event.altKey === true && (event.key === "1" || event.key === "2" || event.key === "3")){ // Checks if Alt + 1/2/3 is pressed
         if (mousePositionElement.className === "task"){ // Checks if pressed on the task
             let table
@@ -165,8 +186,9 @@ document.addEventListener("keydown", event =>{
             moveTask(table, mousePositionElement)
         }
     }
-    
 })
+
+document.getElementById("search").addEventListener("keyup", searchTask) // Handles keyboard press release
 
 window.addEventListener('load', saveAfterLoad) // Handles loading page
 
