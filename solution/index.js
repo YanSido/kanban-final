@@ -20,24 +20,49 @@ function addTask(tableElement, text){
         taskListEl.prepend(taskEl) // Inserts the task to the first place
         tableElement.getElementsByTagName("input")[0].value = "" // Display the placeholder after adding a task
 
-        let table
-        if (tableElement.id === "to-do-tasks-section"){
-            table = "todo"
-        }
-        if (tableElement.id === "in-progress-tasks-section"){
-            table = "in-progress"
-        }
-        if (tableElement.id === "done-tasks-section"){
-            table = "done"
-        }
+        let table = findTableNameByElement(tableElement)
 
-        addToLocalStorage(table, text)
+        updateLocalStorage(table, text)
 
     }
     else{ // In case the user adds empty task
         alert("Please Write Task to Add")
+    } 
+}
+
+function editTask(taskElement){
+    // Gets task element
+    // Edits the content of the task given
+    let editedTask = taskElement.innerText
+    let tableElement = findTableElementByName(taskElement.parentNode.getAttribute("class"))
+    let tableName = findTableNameByElement(tableElement)
+    updateLocalStorage(tableName, editedTask, findTaskIndex(taskElement))
+    taskElement.setAttribute("contenteditable", false) // disable the edit after unfocus
+}
+
+function moveTask(newTable, task){
+    let taskIndex = findTaskIndex(task)
+    let taskParentTableEl = findTableElementByName(task.parentNode.getAttribute("class"))
+    task.remove() // Remove from current table DOM
+    updateLocalStorage(findTableNameByElement(taskParentTableEl), "", taskIndex, true) // Remove from current table local storage
+    let tableElement = findTableElementByName(newTable)
+    addTask(tableElement, task.innerText)
+}
+
+function findTableNameByElement(tableElement){
+    // Gets table Element
+    // Returns the name of the table
+    let table
+    if (tableElement.id === "to-do-tasks-section"){
+        table = "todo"
     }
-    
+    if (tableElement.id === "in-progress-tasks-section"){
+        table = "in-progress"
+    }
+    if (tableElement.id === "done-tasks-section"){
+        table = "done"
+    }
+    return table
 }
 
 function findTableElementByName(table){
@@ -71,19 +96,39 @@ function saveAfterLoad(){
     }
 }
 
-function addToLocalStorage(table, task){
-    // Gets table name (To DO, IN PROGRESS, DONE)
-    // Adds the task to relevant location in local storage
+function updateLocalStorage(table, task, taskIndex, remove){
+    // Gets table name (todo, in-progress, done), task, task index, remove indicator
+    // Adds/edits the task in relevant location in local storage
     let oldTasks = JSON.parse(localStorage.getItem("tasks"))
     let newTasks = Object.assign({}, oldTasks) // Assigns the currently tasks to variable
-    newTasks[table].unshift(task) // Adds the new task to the new variable 
+    if (typeof(taskIndex) === "number"){ // Task index is given in case the user wants to edit task
+        if (remove){ // If the function called to remove item from local storage
+            newTasks[table].splice(taskIndex, 1)
+        }
+        else { // If the function called to rdit item from local storage
+            newTasks[table][taskIndex] = task
+        }
+    }
+    else { // In case the user wants to add task
+        newTasks[table].unshift(task) // Adds the new task to the new variable 
+    }
+
     localStorage.removeItem("tasks") // Removes the old tasks from local storage
     localStorage.setItem("tasks", JSON.stringify(newTasks))
+}
 
+function findTaskIndex(taskElement){
+    // Gets task element
+    // Returns the index of the task in the table
+    let i = 0
+    while ((taskElement =  taskElement.previousSibling) != null){
+        i++
+    }
+    return i;
 }
 
 // Event Listeners
-document.addEventListener("click", event => { // Uses one listener to all buttons in the page
+document.addEventListener("click", event => { // Uses one listener to all click in the page
     if (event.target.className === "add-task-button"){ // Handles add task button
       let tableEl = event.target.parentNode.parentNode // Finds the relevant button's clicked table
       let newTaskText = tableEl.getElementsByTagName("input")[0].value // Finds the new tasks's text
@@ -91,4 +136,37 @@ document.addEventListener("click", event => { // Uses one listener to all button
     }
   })
 
+document.addEventListener("dblclick", event => {
+    if (event.target.className === "task"){
+        event.target.setAttribute("contenteditable", true) // Enable the edit
+        event.target.addEventListener("blur", () => {editTask(event.target)}) 
+    }
+    
+})
+
+let mousePositionElement // Get live element mouse position
+document.addEventListener("mouseover", event =>{
+    mousePositionElement = event.target
+})
+
+document.addEventListener("keydown", event =>{
+    if (event.altKey === true && (event.key === "1" || event.key === "2" || event.key === "3")){ // Checks if Alt + 1/2/3 is pressed
+        if (mousePositionElement.className === "task"){ // Checks if pressed on the task
+            let table
+            if (event.key === "1"){
+                table = "todo"
+            }
+            if (event.key === "2"){
+                table = "in-progress"
+            }
+            if (event.key === "3"){
+                table = "done"
+            }
+            moveTask(table, mousePositionElement)
+        }
+    }
+    
+})
+
 window.addEventListener('load', saveAfterLoad) // Handles loading page
+
