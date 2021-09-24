@@ -7,6 +7,7 @@
     <script src="./index.js" defer></script>
     <link rel="stylesheet" href="./styles.css" />
     <title>Tasks manager</title>
+    
 </head>
 <body>
     <div id = "page-title">
@@ -23,8 +24,10 @@
             </div>
             <ul class="to-do-tasks">
             </ul>
-            <input type = "text" placeholder="Add Task" id = "add-to-do-task">
-            <button type = "submit" id = "submit-add-to-do">Button</button>
+            <div class = "add-task-div">
+                <input type = "text" placeholder="Add Task" id = "add-to-do-task">
+                <button type = "submit" class = "add-task-button" id = "submit-add-to-do">Button</button>
+            </div>
         </section>
         <section id = "in-progress-tasks-section">
             <div class = "title-div" id = "in-progress-title-div">
@@ -33,8 +36,10 @@
             </div>
             <ul class="in-progress-tasks">
             </ul>
-            <input type = "text" placeholder="Add Task" id = "add-in-progress-task">
-            <button type = "submit" id = "submit-add-in-progress">Button</button>
+            <div class = "add-task-div">
+                <input type = "text" placeholder="Add Task" id = "add-in-progress-task">
+                <button type = "submit" class = "add-task-button" id = "submit-add-in-progress">Button</button>
+            </div>
         </section>
         <section id = "done-tasks-section">
             <div class = "title-div" id = "done-title-div">
@@ -43,8 +48,10 @@
             </div>
             <ul class="done-tasks">
             </ul>
-            <input type = "text" placeholder="Add Task" id = "add-done-task">
-            <button type = "submit" id = "submit-add-done">Button</button>
+            <div class = "add-task-div">
+                <input type = "text" placeholder="Add Task" id = "add-done-task">
+                <button type = "submit" class = "add-task-button" id = "submit-add-done">Button</button>
+            </div>
         </section>
     </div>
 </body>
