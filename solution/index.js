@@ -9,20 +9,21 @@ if (!localStorage.getItem("tasks")){ // Checks if there is key called "tasks" ex
 
 function addTask(tableElement, text){
     // Gets spesific table element, and task text
-    // Returns the task element created <----------------------------------
+    // Adds the task to DOM and local storage
     if (text){
         // Creating element for task
         let taskEl = document.createElement("li")
         let taskListEl = tableElement.getElementsByTagName("ul")[0]
         taskEl.setAttribute("class", "task")
         taskEl.setAttribute("style", "list-style-type:none") // Adds unordered list without bullets
+        taskEl.setAttribute("draggable", "true") // Allows to drag the element
         taskEl.innerText = text
+
         taskListEl.prepend(taskEl) // Inserts the task to the first place
+        
         tableElement.getElementsByTagName("input")[0].value = "" // Display the placeholder after adding a task
 
-        let table = findTableNameByElement(tableElement)
-
-        updateLocalStorage(table, text)
+        updateLocalStorage(findTableNameByElement(tableElement), text) // Updates the local storage
 
     }
     else{ // In case the user adds empty task
@@ -36,34 +37,42 @@ function editTask(taskElement){
     let editedTask = taskElement.innerText
     let tableElement = findTableElementByName(taskElement.parentNode.getAttribute("class"))
     let tableName = findTableNameByElement(tableElement)
-    updateLocalStorage(tableName, editedTask, findTaskIndex(taskElement))
+
+    updateLocalStorage(tableName, editedTask, findTaskIndex(taskElement)) // Updates the local storage
+
     taskElement.setAttribute("contenteditable", false) // disable the edit after unfocus
 }
 
 function moveTask(newTable, task){
+    // Gets new table and task
+    // Adds to table the task
     let taskIndex = findTaskIndex(task)
     let taskParentTableEl = findTableElementByName(task.parentNode.getAttribute("class"))
+
     task.remove() // Remove from current table DOM
+
     updateLocalStorage(findTableNameByElement(taskParentTableEl), "", taskIndex, true) // Remove from current table local storage
-    let tableElement = findTableElementByName(newTable)
-    addTask(tableElement, task.innerText)
+
+    addTask(findTableElementByName(newTable), task.innerText)
 }
 
 function searchTask(){
     // Display tasks that their name contains given string
     let searchTaskString = document.getElementById("search") // Given string in search bar
+
     searchTaskString = searchTaskString.value.toUpperCase() // Does not metter if lower case or upper case
+
     if (searchTaskString !== ""){
         for (let task of document.getElementsByClassName("task")){
             if (!task.innerText.toUpperCase().includes(searchTaskString)){ // Checks every task if contains the given search
-                task.style.display = "none"
+                task.style.display = "none" // Hides the not relevant tasks
             }
             else{
-                task.style.display = "block"
+                task.style.display = "block" // Shows the relevant tasks
             }
         }
     }
-    else{
+    else{ // Incase search bar is empty, shows all the task as default
         for (let task of document.getElementsByClassName("task")){
             task.style.display = "block"   
         }
@@ -109,29 +118,37 @@ function saveAfterLoad(){
             let taskEl = document.createElement("li")
             let tableElement = findTableElementByName(table)
             let taskListEl = tableElement.getElementsByTagName("ul")[0]
+
             taskEl.setAttribute("class", "task")
             taskEl.setAttribute("style", "list-style-type:none") // Adds unordered list without bullets
+            taskEl.setAttribute("draggable", "true") // Allows to drag the element
             taskEl.innerText = tasks[table][i]
+
             taskListEl.prepend(taskEl) // Inserts the task to the first place
         }
     }
 }
 
-function updateLocalStorage(table, task, taskIndex, remove){
-    // Gets table name (todo, in-progress, done), task, task index, remove indicator
-    // Adds/edits the task in relevant location in local storage
+function updateLocalStorage(table, task, taskIndex, remove, moved){
+    // Gets table name (todo, in-progress, done), task, task index, remove indicator, move indicator
+    // Adds/edits/removes the task in relevant location in local storage
     let oldTasks = JSON.parse(localStorage.getItem("tasks"))
     let newTasks = Object.assign({}, oldTasks) // Assigns the currently tasks to variable
+
     if (typeof(taskIndex) === "number"){ // Task index is given in case the user wants to edit task
         if (remove){ // If the function called to remove item from local storage
             newTasks[table].splice(taskIndex, 1)
         }
-        else { // If the function called to rdit item from local storage
+        else if (!remove && !moved) { // If the function called to edit item from local storage
             newTasks[table][taskIndex] = task
+        }
+    
+        if(moved){ // Adds to specific location in table
+            newTasks[table].splice(taskIndex,0,task)
         }
     }
     else { // In case the user wants to add task
-        newTasks[table].unshift(task) // Adds the new task to the new variable 
+        newTasks[table].unshift(task) // Adds the new task to the first place 
     }
 
     localStorage.removeItem("tasks") // Removes the old tasks from local storage
@@ -147,6 +164,7 @@ function findTaskIndex(taskElement){
     }
     return i;
 }
+
 
 // Event Listeners
 document.addEventListener("click", event => { // Uses one listener to all click in the page
@@ -192,3 +210,81 @@ document.getElementById("search").addEventListener("keyup", searchTask) // Handl
 
 window.addEventListener('load', saveAfterLoad) // Handles loading page
 
+// Drag & Drop Handle
+let draggableTask = null // Current dragged task element
+let originalDraggableTaskTable = null // Current dragged task's table element before drag
+let originalDraggableTaskIndex = null // Current dragged task's index in list before drag
+
+document.addEventListener("dragstart", event =>{ // Handles starting drag
+    if (event.target.className === "task"){ // To enable only on task elemets
+        draggableTask = event.target
+        setTimeout(() =>{ 
+            event.target.style.display = "none" // To hide the selected task
+        }, 0)
+
+        originalDraggableTaskTable = event.target.parentNode.parentNode.cloneNode(true)
+        originalDraggableTaskIndex = findTaskIndex(draggableTask)
+
+    }
+})
+
+document.addEventListener("dragend", event =>{ // Handles the end of the drag
+    if (event.target.className === "task"){ 
+        draggableTask = null
+        setTimeout(() =>{
+            event.target.style.display = "block" // To show the selected task
+        }, 0)
+    }
+})
+
+document.addEventListener("dragover", event =>{ // Handles the over dragged elements
+    if (event.target.tagName === "SECTION"){ // To enable only on table elemets
+        event.preventDefault() // Fix no display problem
+    }
+    if (event.target.tagName === "LI"){ 
+        event.preventDefault() // Fix no display problem
+    }
+})
+
+document.addEventListener("dragenter", event =>{ // Handles the enter of the current dragged into relevant elements
+    // border effect if enter to relevant elements
+    if (event.target.tagName === "SECTION"){ 
+        event.target.style.border = "2px dashed #ccc"
+    }
+    if (event.target.tagName === "LI"){ 
+        event.target.style.borderBottom = "2px dashed #ccc"
+    }
+})
+
+document.addEventListener("dragleave", event =>{ // Handles the exit of the current dragged from relevant elements
+    // border effect if exits from relevant elements
+    if (event.target.tagName === "SECTION"){
+        event.target.style.border = "2px solid"
+    }
+    if (event.target.tagName === "LI"){
+        event.target.style.borderBottom = "none"
+    }
+})
+
+document.addEventListener("drop", event =>{ // Handles when the user drops the element
+    if (event.target.tagName === "SECTION" && originalDraggableTaskTable.id !== event.target.id){ // To enable only on section and if not in the same element as at the beginning
+        event.target.style.border = "2px solid"
+        addTask(event.target, draggableTask.innerText) // Adds the task to the top of the table
+        updateLocalStorage(findTableNameByElement(originalDraggableTaskTable), draggableTask.innerText, originalDraggableTaskIndex, true) // Remove from previous table in local storage
+
+        let originalElement = document.getElementById(originalDraggableTaskTable.id).querySelectorAll(".task")[originalDraggableTaskIndex] // Finds the task element before dragging
+
+        originalElement.remove() // Remove from previous table in DOM
+    }
+
+    if (event.target.tagName === "LI" && originalDraggableTaskTable.id !== event.target.parentNode.parentNode.id){ // To enable only on section and if not in the same element as at the beginning
+        event.target.style.borderBottom = "none"
+
+        updateLocalStorage(findTableNameByElement(event.target.parentNode.parentNode), draggableTask.innerText, findTaskIndex(event.target) + 1, "" ,true) // Adds the task below the element that dropped on
+        updateLocalStorage(findTableNameByElement(originalDraggableTaskTable), draggableTask.innerText, originalDraggableTaskIndex, true) // Remove from previous table in local storage
+
+        event.target.parentNode.insertBefore(draggableTask, event.target.nextSibling) // Adds the task to the new DOM
+
+    }
+    
+})
