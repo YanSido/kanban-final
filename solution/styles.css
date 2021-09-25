@@ -32,3 +32,33 @@ section{
     border: 2px solid;
     width: 30%;
 }
+
+.loader:not([hidden]) {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .loader::after {
+    content: "";
+    width: 100px;
+    height: 100px;
+    border: 2px solid #ffffff;
+    border-top: 3px solid #ff00dd;
+    border-radius: 100%;
+    will-change: transform;
+    animation: spin 1s infinite linear
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }

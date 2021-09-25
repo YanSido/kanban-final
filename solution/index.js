@@ -7,6 +7,82 @@ if (!localStorage.getItem("tasks")){ // Checks if there is key called "tasks" ex
     localStorage.setItem("tasks", JSON.stringify(tasks))
 }
 
+async function sendLoadRequest(){
+    // Sends HTTP GET request
+    // Returns the data in API
+
+    let loaderEl = document.createElement("div")
+    loaderEl.setAttribute("class", "loader")
+    document.getElementsByTagName("body")[0].appendChild(loaderEl)
+
+    const response = await fetch("https://json-bins.herokuapp.com/bin/614c589018fa9b97f9f6adba", { // Sending http GET request
+        method: "GET",
+        header: {
+            "Content-Type": "application/json"
+        },
+   
+    })
+
+    document.getElementsByClassName("loader")[0].remove() // Removes loader after receiving response
+
+    if (!response.ok){ // If there is an error, alerts the error
+        alert(response.statusText)
+        throw Error(response.statusText)
+    }
+
+    return response
+}
+
+async function sendSaveRequest() { 
+    let tasks = JSON.parse(localStorage.getItem("tasks")) // Saves local storage to a variable
+
+    // Creating loader when sending request
+    let loaderEl = document.createElement("div")
+    loaderEl.setAttribute("class", "loader")
+    document.getElementsByTagName("body")[0].appendChild(loaderEl)
+
+    const response = await fetch("https://json-bins.herokuapp.com/bin/614c589018fa9b97f9f6adba" , {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({tasks}) 
+    })
+
+    document.getElementsByClassName("loader")[0].remove() // Removes loader after receiving response
+
+
+    if (!response.ok) { // If there is an error, alerts the error
+        alert(response.statusText)
+        throw Error(response.statusText)
+    }
+
+}
+
+async function handleAnswer(requestType){
+    // Gets a request type
+    // Returns the tasks from APi or Update the tasks in the API
+    if (requestType === "load"){
+        const jsonResponse = await (await sendLoadRequest()).json() // Convert to JSON format
+
+        let apiData = jsonResponse.tasks // API data
+        let localStorageData = JSON.parse(localStorage.getItem("tasks")) // Local storage data
+
+        if (JSON.stringify(apiData) !== JSON.stringify(localStorageData)){ // In case the data loaded from API different from the data in local storage
+            localStorage.setItem("tasks" , JSON.stringify(apiData)) // Update the local storage from API
+
+            // Updates DOM
+            clearDom()
+            saveDomAfterLoad()
+        }    
+    }
+
+    if (requestType === "save"){
+        sendSaveRequest()
+    }
+    
+}
+
 function addTask(tableElement, text){
     // Gets spesific table element, and task text
     // Adds the task to DOM and local storage
@@ -109,7 +185,7 @@ function findTableElementByName(table){
     }
 }
 
-function saveAfterLoad(){
+function saveDomAfterLoad(){
     // Saves DOM after reloading page based on local storage
     let tasks = JSON.parse(localStorage.getItem("tasks"))
     for (let table in tasks){
@@ -165,13 +241,30 @@ function findTaskIndex(taskElement){
     return i;
 }
 
+function clearDom(){
+    // Clears the DOM
+    let ulElements = [document.getElementsByClassName("to-do-tasks")[0] , document.getElementsByClassName("in-progress-tasks")[0] , document.getElementsByClassName("done-tasks")[0]]
+    
+    for (let ulElement of ulElements){
+        ulElement.innerHTML = ""
+    }
+}
 
 // Event Listeners
 document.addEventListener("click", event => { // Uses one listener to all click in the page
-    if (event.target.className === "add-task-button"){ // Handles add task button
-      let tableEl = event.target.parentNode.parentNode // Finds the relevant button's clicked table
-      let newTaskText = tableEl.getElementsByTagName("input")[0].value // Finds the new tasks's text
-      addTask(tableEl, newTaskText)
+    if (event.target.className === "add-task-button"){ // Handles add task buttons
+        let tableEl = event.target.parentNode.parentNode // Finds the relevant button's clicked table
+        let newTaskText = tableEl.getElementsByTagName("input")[0].value // Finds the new tasks's text
+        addTask(tableEl, newTaskText)
+    }
+
+    if (event.target.className === "api-button"){ // Handles API buttons
+        if (event.target.id === "save-btn"){
+            handleAnswer("save")
+        }
+        if (event.target.id === "load-btn"){
+            handleAnswer("load")
+        }
     }
   })
 
@@ -208,7 +301,7 @@ document.addEventListener("keydown", event =>{ // Handles keyboard press events
 
 document.getElementById("search").addEventListener("keyup", searchTask) // Handles keyboard press release
 
-window.addEventListener('load', saveAfterLoad) // Handles loading page
+window.addEventListener('load', saveDomAfterLoad) // Handles loading page
 
 // Drag & Drop Handle
 let draggableTask = null // Current dragged task element
