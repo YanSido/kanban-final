@@ -2,12 +2,15 @@
 
 ## Welcome to Sido's Kanban
 
-![Example](.\pagescreenshot.png)
+![Example](./pagescreenshot.png)
 
 ## Table of contents
 * [General info](#general-info)
-* [Technologies](#technologies)
 * [Setup](#setup)
+* [Instructions](#instructions)
+* [API Integration](#api-Integration)
+* [Contributing](#contributing)
+* [Contact](#contact)
 
 ## General info
 
@@ -16,9 +19,10 @@ This project helps you to track your daily tasks easliy
 ## Setup
 
 To run this project execute
-...
- `npm run final <your name>` 
-...
+```
+  npm run final <your name> 
+
+```
  (replace `<your name>` with your name). This command will install all the needed dependencies, and generate an [api-data.txt](#api-integration) file.
 
 ## Instructions
@@ -26,7 +30,7 @@ To run this project execute
 1. Click on one of the add-task buttons, to add a new task to the respective list. The task content will be taken from the respective input field. (must contain to add)
 2. Double clicking a task will enable to edit its text. The change will be saved after loosing focus.
 3. Hovering over a task element and pressing `alt + 1-3` will move the task to the appropriate list (`1`: todo, `2`: in-progress, `3`: done).
-4. The search input should filter tasks case-**in**sensitively, so that only tasks that match the search string are displayed.
+4. The search input filters tasks case-**in**sensitively, so that only tasks that match the search string are displayed.
 5. Right click on task will delete it.
 6. Every time you add/remove task, will update the counter under the list's title (todo, in-progress, done).
 7. Dragging task to other list will add it to the top of the appropriate list, Dragging task to other task will add it underneath it.
