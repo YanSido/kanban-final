@@ -18,7 +18,6 @@ h1{
     color: white
 }
 
-
 #search-div{
     text-align: center;
     margin-top: 20px;
@@ -122,6 +121,7 @@ ul{
 }
 
 li{
+    position:relative;
     overflow: none;
     width:20px;
     height:30px;
@@ -130,6 +130,11 @@ li{
     background-image: url(stickynotebackground.png);
     padding: 70px 95px 70px 95px;
     background-size: cover;
+
+}
+
+li:hover .remove-task-btn{
+    display: block;
 }
 
 #sections-container input{
@@ -171,7 +176,36 @@ li{
     transition: all .5s;
 }
 
-
+.remove-task-btn {
+    display: none;
+    border: none;
+    background:none;
+    position: absolute;
+    top: 10%;
+    right: 17%;
+    width: 5px;
+    height: 5px;
+    opacity: 0.3;
+    cursor: pointer;
+  }
+  .remove-task-btn:hover {
+    opacity: 1;
+  }
+  .remove-task-btn:before, .remove-task-btn:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 25px;
+    width: 2px;
+    background-color: #333;
+  }
+  .remove-task-btn:before {
+    transform: rotate(45deg);
+  }
+  .remove-task-btn:after {
+    transform: rotate(-45deg);
+  }
+  
 #api-buttons-div{
     display: flex;
     justify-content: center;
@@ -270,6 +304,7 @@ li{
     animation: spin 1s infinite linear
   }
  
+
   @keyframes spin {
     from {
       transform: rotate(0deg);

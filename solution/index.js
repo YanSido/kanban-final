@@ -94,6 +94,10 @@ function addTask(tableElement, text){
         taskEl.setAttribute("draggable", "true") // Allows to drag the element
         taskEl.innerText = text
 
+        // Creating close button
+        let closeBtnEl = document.createElement("button")
+        closeBtnEl.setAttribute("class", "remove-task-btn")
+        taskEl.appendChild(closeBtnEl)
         taskListEl.prepend(taskEl) // Inserts the task to the first place
         
         tableElement.getElementsByTagName("input")[0].value = "" // Display the placeholder after adding a task
@@ -198,6 +202,11 @@ function saveDomAfterLoad(){
             taskEl.setAttribute("class", "task")
             taskEl.setAttribute("draggable", "true") // Allows to drag the element
             taskEl.innerText = tasks[table][i]
+
+            // Creating close button
+            let closeBtnEl = document.createElement("button")
+            closeBtnEl.setAttribute("class", "remove-task-btn")
+            taskEl.appendChild(closeBtnEl)
 
             taskListEl.prepend(taskEl) // Inserts the task to the first place
         }
@@ -316,6 +325,14 @@ document.addEventListener("click", event => { // Uses one listener to all click 
             handleAnswer("load")
         }
     }
+
+    if (event.target.className === "remove-task-btn"){ // Handles close button
+        updateLocalStorage(findTableNameByElement(event.target.parentNode.parentNode.parentNode), event.target.parentNode, findTaskIndex(event.target.parentNode), true)
+        clearDom()
+        saveDomAfterLoad()
+        
+    }
+
   })
 
 document.addEventListener("dblclick", event => { // Handles double click events
