@@ -94,10 +94,6 @@ function addTask(tableElement, text){
         taskEl.setAttribute("draggable", "true") // Allows to drag the element
         taskEl.innerText = text
 
-        // Creating close button
-        let closeBtnEl = document.createElement("button")
-        closeBtnEl.setAttribute("class", "remove-task-btn")
-        taskEl.appendChild(closeBtnEl)
         taskListEl.prepend(taskEl) // Inserts the task to the first place
         
         tableElement.getElementsByTagName("input")[0].value = "" // Display the placeholder after adding a task
@@ -116,7 +112,7 @@ function editTask(taskElement){
     let editedTask = taskElement.innerText
     let tableElement = findTableElementByName(taskElement.parentNode.getAttribute("class"))
     let tableName = findTableNameByElement(tableElement)
-
+    
     updateLocalStorage(tableName, editedTask, findTaskIndex(taskElement)) // Updates the local storage
 
     taskElement.setAttribute("contenteditable", false) // disable the edit after unfocus
@@ -202,11 +198,6 @@ function saveDomAfterLoad(){
             taskEl.setAttribute("class", "task")
             taskEl.setAttribute("draggable", "true") // Allows to drag the element
             taskEl.innerText = tasks[table][i]
-
-            // Creating close button
-            let closeBtnEl = document.createElement("button")
-            closeBtnEl.setAttribute("class", "remove-task-btn")
-            taskEl.appendChild(closeBtnEl)
 
             taskListEl.prepend(taskEl) // Inserts the task to the first place
         }
@@ -326,14 +317,28 @@ document.addEventListener("click", event => { // Uses one listener to all click 
         }
     }
 
-    if (event.target.className === "remove-task-btn"){ // Handles close button
-        updateLocalStorage(findTableNameByElement(event.target.parentNode.parentNode.parentNode), event.target.parentNode, findTaskIndex(event.target.parentNode), true)
-        clearDom()
-        saveDomAfterLoad()
-        
-    }
+    if (event.target.id === "switch"){ // Handles Dark Mode toggle switch
+        document.getElementsByTagName("body")[0].classList.toggle("toggled-background")
 
+        document.getElementsByTagName("h1")[0].classList.toggle("toggled-title")
+
+        document.getElementsByClassName("add-task-div")[0].classList.toggle("toggled-search")
+        document.getElementsByClassName("add-task-div")[1].classList.toggle("toggled-search")
+        document.getElementsByClassName("add-task-div")[2].classList.toggle("toggled-search")
+        
+
+    } 
+    
   })
+
+document.addEventListener("contextmenu", event => { // Listener for right click
+    event.preventDefault() // Prevent opening option window
+    if (event.target.className === "task"){ // Handles delete task
+        updateLocalStorage(findTableNameByElement(event.target.parentNode.parentNode), event.target, findTaskIndex(event.target), true)
+        clearDom()
+        saveDomAfterLoad()     
+    }
+});
 
 document.addEventListener("dblclick", event => { // Handles double click events
     if (event.target.className === "task"){
@@ -427,21 +432,21 @@ document.addEventListener("dragleave", event =>{ // Handles the exit of the curr
 })
 
 document.addEventListener("drop", event =>{ // Handles when the user drops the element
-    if (event.target.tagName === "SECTION" && originalDraggableTaskTable.id !== event.target.id){ // To enable only on section and if not in the same element as at the beginning
+    if (event.target.tagName === "SECTION"){ // To enable only on section and if not in the same element as at the beginning
         event.target.style.border = "4px solid #ce9171"
-        addTask(event.target, draggableTask.innerText) // Adds the task to the top of the table
         updateLocalStorage(findTableNameByElement(originalDraggableTaskTable), draggableTask.innerText, originalDraggableTaskIndex, true) // Remove from previous table in local storage
+        addTask(event.target, draggableTask.innerText) // Adds the task to the top of the table
 
         let originalElement = document.getElementById(originalDraggableTaskTable.id).querySelectorAll(".task")[originalDraggableTaskIndex] // Finds the task element before dragging
 
-        originalElement.remove() // Remove from previous table in DOM
-    }
+        clearDom()
+        saveDomAfterLoad()    }
 
-    if (event.target.tagName === "LI" && originalDraggableTaskTable.id !== event.target.parentNode.parentNode.id){ // To enable only on section and if not in the same element as at the beginning
+    if (event.target.tagName === "LI"){ // To enable only on list
         event.target.style.borderBottom = "none"
 
-        updateLocalStorage(findTableNameByElement(event.target.parentNode.parentNode), draggableTask.innerText, findTaskIndex(event.target) + 1, "" ,true) // Adds the task below the element that dropped on
         updateLocalStorage(findTableNameByElement(originalDraggableTaskTable), draggableTask.innerText, originalDraggableTaskIndex, true) // Remove from previous table in local storage
+        updateLocalStorage(findTableNameByElement(event.target.parentNode.parentNode), draggableTask.innerText, findTaskIndex(event.target) + 1, "" ,true) // Adds the task below the element that dropped on
 
         event.target.parentNode.insertBefore(draggableTask, event.target.nextSibling) // Adds the task to the new DOM
 

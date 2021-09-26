@@ -133,10 +133,6 @@ li{
 
 }
 
-li:hover .remove-task-btn{
-    display: block;
-}
-
 #sections-container input{
     text-align: center;
     padding: 67px 5px 67px 5px;
@@ -175,36 +171,6 @@ li:hover .remove-task-btn{
     -moz-transition: all .5s;
     transition: all .5s;
 }
-
-.remove-task-btn {
-    display: none;
-    border: none;
-    background:none;
-    position: absolute;
-    top: 10%;
-    right: 17%;
-    width: 5px;
-    height: 5px;
-    opacity: 0.3;
-    cursor: pointer;
-  }
-  .remove-task-btn:hover {
-    opacity: 1;
-  }
-  .remove-task-btn:before, .remove-task-btn:after {
-    position: absolute;
-    left: 15px;
-    content: ' ';
-    height: 25px;
-    width: 2px;
-    background-color: #333;
-  }
-  .remove-task-btn:before {
-    transform: rotate(45deg);
-  }
-  .remove-task-btn:after {
-    transform: rotate(-45deg);
-  }
   
 #api-buttons-div{
     display: flex;
@@ -235,6 +201,7 @@ li:hover .remove-task-btn{
     text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.28);
     cursor: pointer;
+    animation: pulse-red 3s infinite;
 }
 
 #save-btn:active{
@@ -269,7 +236,8 @@ li:hover .remove-task-btn{
     text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.28);
     cursor: pointer;
-}
+    animation: pulse-green 3s infinite;
+  }
 
 #load-btn:active{
     -ms-transform: translateY(2px);
@@ -281,6 +249,69 @@ li:hover .remove-task-btn{
     background-image: linear-gradient(#62ebd8 0%, #9be0d7 100%);
 }
 
+#toggle-button{
+    text-align: center;
+}
+
+.toggled-background{
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.toggled-title{
+    color:rgba(0, 0, 0, 0.85);
+}
+
+.toggled-search input{
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white
+}
+
+.toggled-search ::placeholder{
+    color: white
+}
+
+input[type=checkbox]{
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+label {
+    margin: 0 auto;
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 100px;
+	height: 50px;
+	background: rgb(59, 59, 59);
+	display: block;
+	border-radius: 100px;
+	position: relative;
+}
+
+label:after {
+	content: '';
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 45px;
+	height: 45px;
+	background: #fff;
+	border-radius: 90px;
+	transition: 0.3s;
+}
+
+input:checked + label {
+	background: #ffffff6b;
+}
+
+input:checked + label:after {
+	left: calc(100% - 5px);
+	transform: translateX(-100%);
+}
+
+label:active:after {
+	width: 130px;
+}
 
 .loader:not([hidden]) {
     top: 0;
@@ -311,6 +342,41 @@ li:hover .remove-task-btn{
     }
     to {
       transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pulse-red {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+    }
+    
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+    }
+  }
+
+  
+  @keyframes pulse-green {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(51, 217, 178, 0.7);
+    }
+    
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(51, 217, 178, 0);
+    }
+    
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(51, 217, 178, 0);
     }
   }
   
