@@ -129,6 +129,7 @@ function moveTask(newTable, task){
     updateLocalStorage(findTableNameByElement(taskParentTableEl), "", taskIndex, true) // Remove from current table local storage
 
     addTask(findTableElementByName(newTable), task.innerText)
+
 }
 
 function searchTask(){
@@ -200,7 +201,9 @@ function saveDomAfterLoad(){
 
             taskListEl.prepend(taskEl) // Inserts the task to the first place
         }
+        
     }
+    updateTasksCounter()
 }
 
 function updateLocalStorage(table, task, taskIndex, remove, moved){
@@ -227,6 +230,9 @@ function updateLocalStorage(table, task, taskIndex, remove, moved){
 
     localStorage.removeItem("tasks") // Removes the old tasks from local storage
     localStorage.setItem("tasks", JSON.stringify(newTasks))
+
+    updateTasksCounter()
+
 }
 
 function findTaskIndex(taskElement){
@@ -248,12 +254,58 @@ function clearDom(){
     }
 }
 
+function updateTasksCounter(){
+    // Updates the tasks counter and paints it
+    let tasks = JSON.parse(localStorage.getItem("tasks"))
+    // Update the number of tasks each table
+    for (let table in tasks){
+        if (String(table) === "todo"){
+            document.getElementById("to-do-counter").innerText = tasks[table].length
+        }
+        if (String(table) === "in-progress"){
+            document.getElementById("in-progress-counter").innerText = tasks[table].length
+        }
+        if (String(table) === "done"){
+            document.getElementById("done-counter").innerText = tasks[table].length
+        }
+        
+    }
+
+    let counterElements = document.getElementsByTagName("h3")
+
+    for (let counterElement of counterElements){
+        if (counterElement.id !== "done-counter"){ // Paints the todo/inprogress task counter depend on the amount
+            if (Number(counterElement.innerText) >= 5){
+                counterElement.style.color = "red"
+            }
+            if (Number(counterElement.innerText) < 5 && Number(counterElement.innerText) > 0){
+                counterElement.style.color = "green"
+            }
+            if (Number(counterElement.innerText) === 0){
+                counterElement.style.color = "white"
+            }
+        }
+        
+        else{ // Paints the done task counter depend on the amount
+            if (Number(counterElement.innerText) === 0){
+                counterElement.style.color = "white"
+            }
+            if (Number(counterElement.innerText) > 0){
+                counterElement.style.color = "green"
+            }
+        }
+    }
+
+}
+
+
 // Event Listeners
 document.addEventListener("click", event => { // Uses one listener to all click in the page
     if (event.target.className === "add-task-button"){ // Handles add task buttons
         let tableEl = event.target.parentNode.parentNode // Finds the relevant button's clicked table
         let newTaskText = tableEl.getElementsByTagName("input")[0].value // Finds the new tasks's text
         addTask(tableEl, newTaskText)
+
     }
 
     if (event.target.className === "api-button"){ // Handles API buttons
