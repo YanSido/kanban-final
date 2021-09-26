@@ -1,37 +1,252 @@
 #page-title {
+    overflow: hidden;
     text-align: center;
+    background: #00b4ff;
+	color: #333;
+	font: 100% Lato, Arial, Sans Serif;
+	height: 100px;
+	overflow-x: hidden;
+    background: rgb(211,192,249);
+    background: linear-gradient(90deg, rgba(211,192,249,1) 0%, rgba(249,154,156,1) 100%);
+    border-bottom-left-radius: 30%;
+	border-bottom-right-radius: 30%;
 }
+
+h1{
+    font-family: 'Permanent Marker', cursive;
+    font-size: 45px;
+    color: white
+}
+
 
 #search-div{
     text-align: center;
+    margin-top: 20px;
     margin-bottom: 20px;
+    
+}
+
+#search{
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 2px solid;
+    border-color: #d3c0f9;
+    border-radius: 9999em;
+}
+
+#search:focus{
+    outline: none;
+    box-shadow: 
+			3px -3px 15px #d3c0f9, 
+			-3px 3px 15px #fdbccf;
+     
+}
+
+#search:hover{
+    transform: scale(1.1);
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    transition: all .5s;
+}
+
+section{
+    padding-bottom: 25px;
+    background-image: url(corkbackground.png);
+    border-radius: 2em;
+    border: 4px solid;
+    border-color: #ce9171;
+    width: 25%;
 }
 
 #sections-container{
     display: flex;
     justify-content: space-around;
     width: 90%;
-    height: 555px;
+    height: auto;
     margin:0 auto;
     text-align: center;
+
 }
 
 .title-div{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    border-bottom: solid;
+    border-bottom: 6px solid;
+    border-color: #ce9171;
 }
 
-h2{
-    margin:0 auto;
+h2{ 
+    font-family: 'Permanent Marker', cursive;
+    color: #bb9afd;
+    font-size: 50px;
+    font-weight: normal;
+    line-height: 60px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0 rgb(255, 255, 255);
+    text-align: center;
+    margin: auto;
+    
+    
 }
 
-section{
-    border: 2px solid;
-    width: 30%;
+#in-progress-tasks-section h2{
+    font-size: 40px;
+    
 }
+
+h3{
+    font-family: 'Anton', sans-serif;
+    color: #ffffff;
+    font-size: 30px;
+    margin: auto;
+}
+
+.add-task-div{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: auto;
+    width: 60%;
+}
+
+ul{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    list-style-type: none;
+    margin-right: 35px;
+}
+
+li{
+    overflow: auto;
+    width:20px;
+    height:30px;
+    font-family: 'Anton', sans-serif;
+    margin-bottom: 10px;
+    background-image: url(stickynotebackground.png);
+    padding: 70px 95px 70px 95px;
+    background-size: cover;
+}
+
+#sections-container input{
+    text-align: center;
+    padding: 67px 5px 67px 5px;
+}
+
+.add-task-button{
+    margin-top: -65px;
+    display: inline-block;
+    text-decoration: none;
+    color: #FFF;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 50px;
+    overflow: hidden;
+    background-image: -webkit-linear-gradient(45deg, #709dff 0%, #91fdb7 100%);    
+    background-image: linear-gradient(45deg, #709dff 0%, #91fdb7 100%);
+    cursor: pointer;
+    transition: .4s;
+}
+
+.add-task-button:hover{ 
+    box-shadow: 
+			3px -3px 15px #b5ddd1, 
+			-3px 3px 15px #d7e7a9;
+            -webkit-transform: rotate(10deg);
+  -ms-transform: rotate(10deg);
+  transform: rotate(10deg);
+}
+
+.add-task-div:hover{
+    transform: scale(1.2);
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    transition: all .5s;
+}
+
+
+#api-buttons-div{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#save-btn{
+    margin-right: 30px;
+    border: none;
+    margin-right: 10px;
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+    color: #f8bcc0;
+    width: 240px;
+    height: 100px;
+    font-size: 50px;
+    line-height: 50px;
+    border-radius: 5px;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+    font-weight: bold;
+    background-image: -webkit-linear-gradient(#f5b8b9 0%, #f99a9c 100%);
+    background-image: linear-gradient(#f5b8b9 0%, #f99a9c 100%);
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.28);
+    cursor: pointer;
+}
+
+#save-btn:active{
+    -ms-transform: translateY(2px);
+    -webkit-transform: translateY(2px);
+    transform: translateY(2px);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+    background-image: -webkit-linear-gradient(#fed6e3 0%, #ffbcbc 100%);
+    color: #f7cccc;
+    background-image: linear-gradient(#fed6e3 0%, #ffbcbc 100%);
+}
+
+#load-btn{
+    margin-left: 30px;
+    border: none;
+    margin-right: 10px;
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+    color: #85ddd1;
+    width: 240px;
+    height: 100px;
+    font-size: 50px;
+    line-height: 50px;
+    border-radius: 5px;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+    font-weight: bold;
+    background-image: -webkit-linear-gradient(#62ebd8 0%, #85ddd1 100%);
+    background-image: linear-gradient(#62ebd8 0%, #b8ece5 100%);
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.28);
+    cursor: pointer;
+}
+
+#load-btn:active{
+    -ms-transform: translateY(2px);
+    -webkit-transform: translateY(2px);
+    transform: translateY(2px);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+    background-image: -webkit-linear-gradient(#62ebd8 0%, #9be0d7 100%);
+    color: #9be0d7;
+    background-image: linear-gradient(#62ebd8 0%, #9be0d7 100%);
+}
+
 
 .loader:not([hidden]) {
     top: 0;
@@ -44,16 +259,17 @@ section{
   }
   
   .loader::after {
+    margin-top: -300px;
     content: "";
     width: 100px;
     height: 100px;
-    border: 2px solid #ffffff;
-    border-top: 3px solid #ff00dd;
+    border: 10px solid #ffffff;
+    border-top: 15px solid #38908f;
     border-radius: 100%;
     will-change: transform;
     animation: spin 1s infinite linear
   }
-  
+ 
   @keyframes spin {
     from {
       transform: rotate(0deg);
@@ -62,3 +278,4 @@ section{
       transform: rotate(360deg);
     }
   }
+  

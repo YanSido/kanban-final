@@ -91,7 +91,6 @@ function addTask(tableElement, text){
         let taskEl = document.createElement("li")
         let taskListEl = tableElement.getElementsByTagName("ul")[0]
         taskEl.setAttribute("class", "task")
-        taskEl.setAttribute("style", "list-style-type:none") // Adds unordered list without bullets
         taskEl.setAttribute("draggable", "true") // Allows to drag the element
         taskEl.innerText = text
 
@@ -196,7 +195,6 @@ function saveDomAfterLoad(){
             let taskListEl = tableElement.getElementsByTagName("ul")[0]
 
             taskEl.setAttribute("class", "task")
-            taskEl.setAttribute("style", "list-style-type:none") // Adds unordered list without bullets
             taskEl.setAttribute("draggable", "true") // Allows to drag the element
             taskEl.innerText = tasks[table][i]
 
@@ -342,17 +340,17 @@ document.addEventListener("dragover", event =>{ // Handles the over dragged elem
 document.addEventListener("dragenter", event =>{ // Handles the enter of the current dragged into relevant elements
     // border effect if enter to relevant elements
     if (event.target.tagName === "SECTION"){ 
-        event.target.style.border = "2px dashed #ccc"
+        event.target.style.border = "4px solid #9af9c5"
     }
     if (event.target.tagName === "LI"){ 
-        event.target.style.borderBottom = "2px dashed #ccc"
+        event.target.style.borderBottom = "6px solid #9af9c5"
     }
 })
 
 document.addEventListener("dragleave", event =>{ // Handles the exit of the current dragged from relevant elements
     // border effect if exits from relevant elements
     if (event.target.tagName === "SECTION"){
-        event.target.style.border = "2px solid"
+        event.target.style.border = "4px solid #ce9171"
     }
     if (event.target.tagName === "LI"){
         event.target.style.borderBottom = "none"
@@ -361,7 +359,7 @@ document.addEventListener("dragleave", event =>{ // Handles the exit of the curr
 
 document.addEventListener("drop", event =>{ // Handles when the user drops the element
     if (event.target.tagName === "SECTION" && originalDraggableTaskTable.id !== event.target.id){ // To enable only on section and if not in the same element as at the beginning
-        event.target.style.border = "2px solid"
+        event.target.style.border = "4px solid #ce9171"
         addTask(event.target, draggableTask.innerText) // Adds the task to the top of the table
         updateLocalStorage(findTableNameByElement(originalDraggableTaskTable), draggableTask.innerText, originalDraggableTaskIndex, true) // Remove from previous table in local storage
 
