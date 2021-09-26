@@ -59,3 +59,5 @@ Contributions are what make the open source community such an amazing place to l
 Github: [@Yan Sidorenko](https://github.com/YanSido)
 
 Project Link: [Sido's Kanban](https://github.com/YanSido/kanban-final)
+
+Github Pages: [https://yansido.github.io/kanban-final/solution/](https://yansido.github.io/kanban-final/solution/)
