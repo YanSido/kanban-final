@@ -6,8 +6,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./index.js" defer></script>
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="tablebackground" href="./corkbackground.png" />
+    <link rel="stickynote" href="./stickynotebackground.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rubik+Beastly&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <title>Tasks manager</title>
 </head>
 <body>
+    <header id = "page-title">
+        <h1>Welcome to Sido's Kanban</h1>
+    </header>
+    <div id = "search-div">
+        <input type="text" placeholder = "Search Task" id = "search">
+    </div>
+    <div id = "sections-container">
+        <section id = "to-do-tasks-section">
+            <div class = "title-div" id = "to-do-title-div">
+                <h2>TO DO</h2>
+                <h3 id = "to-do-counter">0</h3>
+            </div>
+            <ul class="to-do-tasks">
+            </ul>
+            <div class = "add-task-div">
+                <input type = "text" placeholder="New Task" id = "add-to-do-task">
+                <button type = "submit" class = "add-task-button" id = "submit-add-to-do">+</button>
+            </div>
+        </section>
+        <section id = "in-progress-tasks-section">
+            <div class = "title-div" id = "in-progress-title-div">
+                <h2>IN PROGRESS</h2>
+                <h3 id = "in-progress-counter">0</h3>
+            </div>
+            <ul class="in-progress-tasks">
+            </ul>
+            <div class = "add-task-div">
+                <input type = "text" placeholder="New Task" id = "add-in-progress-task">
+                <button type = "submit" class = "add-task-button" id = "submit-add-in-progress">+</button>
+            </div>
+        </section>
+        <section id = "done-tasks-section">
+            <div class = "title-div" id = "done-title-div">
+                <h2>DONE</h2>
+                <h3 id = "done-counter">0</h3>
+            </div>
+            <ul class="done-tasks">
+            </ul>
+            <div class = "add-task-div">
+                <input type = "text" placeholder="New Task" id = "add-done-task">
+                <button type = "submit" class = "add-task-button" id = "submit-add-done">+</button>
+            </div>
+        </section>
+    </div>
+    <div id = "api-buttons-div">
+        <button type = "submit" class = "api-button" id = "save-btn">Save</button>
+        <button type = "submit" class = "api-button" id = "load-btn">Load</button>
+    </div>
+    <div id = "toggle-button">
+        <input type="checkbox" id="switch" /><label for="switch"></label>
+    </div>
 </body>
 </html>
