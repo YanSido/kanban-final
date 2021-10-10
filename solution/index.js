@@ -174,7 +174,7 @@ function findTableNameByElement(tableElement){
 function findTableElementByName(table){
     // Gets table name ("todo", "in-progress", "done")
     // Returns the section element of given table name
-    if (table.includes("todo") || table.includes("to-do")){
+    if (["todo", "to-do"].includes(table)){
         return document.getElementById("to-do-tasks-section")
     }
     if (table.includes("in-progress")){
@@ -354,7 +354,7 @@ document.addEventListener("mouseover", event =>{ // Handles hover events
 })
 
 document.addEventListener("keydown", event =>{ // Handles keyboard press events
-    if (event.altKey === true && (event.key === "1" || event.key === "2" || event.key === "3")){ // Checks if Alt + 1/2/3 is pressed
+    if (event.altKey === true && (["1", "2", "3"].includes(event.key))){ // Checks if Alt + 1/2/3 is pressed
         if (mousePositionElement.className === "task"){ // Checks if pressed on the task
             let table
             if (event.key === "1"){
