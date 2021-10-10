@@ -322,13 +322,10 @@ document.addEventListener("click", event => { // Uses one listener to all click 
 
         document.getElementsByTagName("h1")[0].classList.toggle("toggled-title")
 
-        document.getElementsByClassName("add-task-div")[0].classList.toggle("toggled-search")
-        document.getElementsByClassName("add-task-div")[1].classList.toggle("toggled-search")
-        document.getElementsByClassName("add-task-div")[2].classList.toggle("toggled-search")
-        
-
-    } 
-    
+        for (let i = 0; i < 3; i++){
+            document.getElementsByClassName("add-task-div")[i].classList.toggle("toggled-search")
+        }
+    }  
   })
 
 document.addEventListener("contextmenu", event => { // Listener for right click
@@ -403,10 +400,7 @@ document.addEventListener("dragend", event =>{ // Handles the end of the drag
 })
 
 document.addEventListener("dragover", event =>{ // Handles the over dragged elements
-    if (event.target.tagName === "SECTION"){ // To enable only on table elemets
-        event.preventDefault() // Fix no display problem
-    }
-    if (event.target.tagName === "LI"){ 
+    if (["SECTION", "LI"].includes(event.target.tagName)){ // To enable only on table elemets
         event.preventDefault() // Fix no display problem
     }
 })
