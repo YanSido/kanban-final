@@ -174,7 +174,7 @@ function findTableNameByElement(tableElement){
 function findTableElementByName(table){
     // Gets table name ("todo", "in-progress", "done")
     // Returns the section element of given table name
-    if (["todo", "to-do"].includes(table)){
+    if (table.includes("todo") || table.includes("to-do")){
         return document.getElementById("to-do-tasks-section")
     }
     if (table.includes("in-progress")){
